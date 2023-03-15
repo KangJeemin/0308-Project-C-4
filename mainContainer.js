@@ -1,3 +1,6 @@
+// const { urlencoded } = require("express");
+
+
 const body = document.getElementsByTagName("body");
 const root = document.getElementById('root');
 const mainContainer = document.getElementById('mainContainer');
@@ -69,3 +72,41 @@ const xhr = new XMLHttpRequest();
       //fetch(_URL).then((response)=> response.json()).then((data){img.src=data.sprites.front_default})
   })  
   }
+for(let i=0;i<URL.length;i++){
+  root.children[1].children[i].addEventListener('click',()=>{
+
+    let b = Math.floor(Math.random() * 1000 + 1);
+    const _URL = URL[i]
+    let newURL = `https://pokeapi.co/api/v2/pokemon/${b}`;
+    
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', _URL);
+    xhr.send();
+    xhr.addEventListener('load', function () {
+      const _PokeData = JSON.parse(xhr.response);
+      img1.src = _PokeData.sprites.front_default;
+      randomContainer.addEventListener('mouseover', function () {
+        if (_PokeData.sprites.back_default == null) {
+          img1.src = _PokeData.sprites.front_default
+        } else {
+          img1.src = _PokeData.sprites.back_default
+        }
+        randomContainer.addEventListener('mouseout', function(){
+          img1.src=_PokeData.sprites.front_default
+       })
+      })
+      // fetch(URL).then((response)=> response.json()).then((data)=>{children[i].src=data.sprites.front_default})
+
+      const xhs = new XMLHttpRequest();
+      URL.splice(i,1,newURL)
+      xhs.open('GET',URL[i])
+      xhs.send();
+      xhs.addEventListener('load', function () {
+        const _PokeData = JSON.parse(xhs.response);
+      mainContainer.children[i].children[0].src = _PokeData.sprites.front_default; //여기가 안 됨 .
+    })
+  })
+
+  
+  })
+}
